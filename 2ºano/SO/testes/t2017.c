@@ -31,10 +31,10 @@ int main(int argc, char** argv){
 		}
 		else close(fdw);
 	}
-	
-	int fd[argc], eof[argc] , flag=1, nl=0, n=0;
-	for(i=1; i<argc; i++) fd[i] = open(argv[i], O_RDONLY);
 
+	int fd[argc], eof[argc] , flag=1, nl=0, n=0;
+	for(i=1; i<argc; i++) eof[i] = 0;
+	for(i=1; i<argc; i++) fd[i] = open(argv[i], O_RDONLY);
 	while(flag){
 		for(i=1;i<argc;i++){
 			char buf[100], str[20];
@@ -53,11 +53,10 @@ int main(int argc, char** argv){
 		}
 		flag = 0;
 		for(i=1;i<argc;i++)
-			if(eof[i]) flag = 1; //caso algum deles nao esteja no EOF
+			if(!eof[i]) flag = 1; //caso algum deles nao esteja no EOF
 	}
 	for(i=1; i<argc; i++){ 
 		close(fd[i]);
-		unlink(argv[i]);
 	}
 	return 0;
 }
